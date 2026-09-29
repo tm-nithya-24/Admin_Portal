@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UNLOX | Admin Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .brand {
+            padding: 0 12px 30px;
+            border-bottom: 1px solid #273244;
+        }
+
+        .brand h2 {
+            font-size: 23px;
+            color: #60a5fa;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .menu-title {
+            color: #64748b;
+            font-size: 11px;
+            margin: 28px 12px 10px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 14px;
+            margin: 5px 0;
+            border-radius: 8px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu .selected {
+            background: #1e3a5f;
+            color: #60a5fa;
+        }
+
+        .admin-card {
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+            padding: 13px;
+            background: #1a2435;
+            border-radius: 10px;
+        }
+
+        .admin-card strong {
+            font-size: 13px;
+        }
+
+        .admin-card small {
+            display: block;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .main {
+            width: calc(100% - 245px);
+            margin-left: 245px;
+            padding: 28px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 11px 15px;
+            border-radius: 8px;
+            width: 220px;
+            outline: none;
+        }
+
+        .notification {
+            background: white;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-title {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+        }
+
+        .stat-card h2 {
+            font-size: 28px;
+            margin: 13px 0 8px;
+        }
+
+        .change {
+            font-size: 11px;
+        }
+
+        .up {
+            color: #059669;
+        }
+
+        .down {
+            color: #dc2626;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 20px;
+            margin-top: 22px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
+            padding: 21px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .panel-heading h2 {
+            font-size: 17px;
+        }
+
+        .view {
+            color: #2563eb;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: normal;
+            padding: 11px 8px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        td {
+            padding: 13px 8px;
+            border-bottom: 1px solid #edf1f5;
+            font-size: 12px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .employee {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2563eb;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .employee-name {
+            font-weight: bold;
+        }
+
+        .employee-role {
+            display: block;
+            color: #94a3b8;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .status {
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .present {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .late {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .absent {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .task {
+            padding: 14px 0;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .task:last-child {
+            border-bottom: none;
+        }
+
+        .task-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .task-info {
+            color: #94a3b8;
+            font-size: 10px;
+            margin: 6px 0 9px;
+        }
+
+        .task-bar {
+            height: 6px;
+            background: #edf2f7;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .task-progress {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .progress-100 {
+            width: 100%;
+        }
+
+        .progress-75 {
+            width: 75%;
+        }
+
+        .progress-50 {
+            width: 50%;
+        }
+
+        .progress-25 {
+            width: 25%;
+        }
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            margin-top: 22px;
+        }
+
+        .attendance-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .summary-box {
+            padding: 17px;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .summary-box span {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .summary-box strong {
+            font-size: 23px;
+        }
+
+        .attendance-rate {
+            margin-top: 17px;
+        }
+
+        .attendance-rate-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .rate-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .rate-fill {
+            height: 100%;
+            width: 86%;
+            background: #10b981;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dce3eb;
+            border-radius: 7px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3b82f6;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        footer {
+            margin-top: 25px;
+            padding: 18px 0;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        @media (max-width: 1100px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                width: calc(100% - 200px);
+                margin-left: 200px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid,
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 16px;
+            }
+
+            .brand {
+                text-align: center;
+                padding-bottom: 15px;
+            }
+
+            .menu-title,
+            .admin-card {
+                display: none;
+            }
+
+            .menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 5px;
+                margin-top: 10px;
+            }
+
+            .menu a {
+                white-space: nowrap;
+                padding: 10px 12px;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .top-actions {
+                width: 100%;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .attendance-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <h2>UNLOX</h2>
+            <p>EMPLOYEE MANAGEMENT</p>
+        </div>
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <nav class="menu">
+            <a href="#" class="selected"> 📊 Dashboard </a>
+            <a href="#">👥 Employees</a>
+            <a href="#">🕘 Attendance</a>
+            <a href="#">✓ Tasks</a>
+            <a href="#">📋 Reports</a>
+            <a href="#">⚙ Settings</a>
+        </nav>
+        <div class="admin-card">
+            <strong>👤 Admin User</strong>
+            <small> System Administrator</small>
+        </div>
+
+    </aside>
+    <main class="main">
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Dashboard Overview</h1>
+                <p>
+                    Monitor employee attendance and task activity.
+                </p>
+            </div>
+
+            <div class="top-actions">
+                <input
+                    class="search"
+                    type="search"
+                    placeholder="Search employees..."
+                >
+
+                <div class="notification">🔔</div>
+            </div>
+        </div>
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-title">
+                        Total Employees
+                    </span>
+                    <span class="stat-icon">
+                        👥
+                    </span>
+                </div>
+                <h2>128</h2>
+                <span class="change up">
+                    ↑ 6 new this month
+                </span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-title">
+                        Present Today
+                    </span>
+                    <span class="stat-icon">
+                        🟢
+                    </span>
+                </div>
+                <h2>104</h2>
+                <span class="change up">
+                    ↑ 4.2% from yesterday
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-title">
+                        Absent Today
+                    </span>
+                    <span class="stat-icon">
+                        🔴
+                    </span>
+                </div>
+                <h2>16</h2>
+                <span class="change down">
+                    ↓ 2 employees
+                </span>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-title">
+                        Pending Tasks
+                    </span>
+                    <span class="stat-icon">
+                        📝
+                    </span>
+                </div>
+                <h2>23</h2>
+                <span class="change up">
+                    78% tasks completed
+                </span>
+            </div>
+
+        </section>
+        <section class="dashboard-grid">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Today's Attendance</h2>
+                    <a href="#" class="view">
+                        View All
+                    </a>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EMPLOYEE</th>
+                            <th>DEPARTMENT</th>
+                            <th>LOGIN</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="employee">
+                                    <div class="avatar">
+                                        AK
+                                    </div>
+                                    <div>
+                                        <span class="employee-name">
+                                            Arun Kumar
+                                        </span>
+
+                                        <span class="employee-role">
+                                            EMP001
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Development</td>
+                            <td>09:05 AM</td>
+                            <td>
+                                <span class="status present">
+                                    Present
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="employee">
+                                    <div class="avatar">
+                                        PS
+                                    </div>
+                                    <div>
+                                        <span class="employee-name">
+                                            Priya S
+                                        </span>
+
+                                        <span class="employee-role">
+                                            EMP002
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Design</td>
+                            <td>09:32 AM</td>
+                            <td>
+                                <span class="status late">
+                                    Late
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="employee">
+                                    <div class="avatar">
+                                        RM
+                                    </div>
+                                    <div>
+                                        <span class="employee-name">
+                                            Rahul M
+                                        </span>
+
+                                        <span class="employee-role">
+                                            EMP003
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Testing</td>
+                            <td>09:01 AM</td>
+                            <td>
+                                <span class="status present">
+                                    Present
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="employee">
+                                    <div class="avatar">
+                                        DR
+                                    </div>
+
+                                    <div>
+                                        <span class="employee-name">
+                                            Divya R
+                                        </span>
+
+                                        <span class="employee-role">
+                                            EMP004
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Marketing</td>
+                            <td>--</td>
+                            <td>
+                                <span class="status absent">
+                                    Absent
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel">
+
+                <div class="panel-heading">
+
+                    <h2>Task Progress</h2>
+
+                    <a href="#" class="view">
+                        View All
+                    </a>
+
+                </div>
+
+                <div class="task">
+                    <div class="task-title">
+                        <span>
+                            Website UI Design
+                        </span>
+
+                        <span>
+                            100%
+                        </span>
+                    </div>
+
+                    <div class="task-info">
+                        Priya S • Design
+                    </div>
+
+                    <div class="task-bar">
+                        <div class="task-progress progress-100"></div>
+                    </div>
+
+                </div>
+
+                <div class="task">
+
+                    <div class="task-title">
+
+                        <span>
+                            API Development
+                        </span>
+
+                        <span>
+                            75%
+                        </span>
+
+                    </div>
+
+                    <div class="task-info">
+                        Arun Kumar • Development
+                    </div>
+
+                    <div class="task-bar">
+                        <div class="task-progress progress-75"></div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="task">
+
+                    <div class="task-title">
+
+                        <span>
+                            Database Testing
+                        </span>
+
+                        <span>
+                            50%
+                        </span>
+
+                    </div>
+
+                    <div class="task-info">
+                        Rahul M • Testing
+                    </div>
+
+                    <div class="task-bar">
+                        <div class="task-progress progress-50"></div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="task">
+
+                    <div class="task-title">
+
+                        <span>
+                            Marketing Report
+                        </span>
+
+                        <span>
+                            25%
+                        </span>
+
+                    </div>
+
+                    <div class="task-info">
+                        Divya R • Marketing
+                    </div>
+
+                    <div class="task-bar">
+                        <div class="task-progress progress-25"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="lower-grid">
+
+            <div class="panel">
+
+                <div class="panel-heading">
+
+                    <h2>Attendance Summary</h2>
+
+                    <span class="view">
+                        This Week
+                    </span>
+
+                </div>
+
+                <div class="attendance-summary">
+                    <div class="summary-box">
+                        <span>
+                            PRESENT
+                        </span>
+
+                        <strong>
+                            86%
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-box">
+                        <span>
+                            ABSENT
+                        </span>
+
+                        <strong>
+                            9%
+                        </strong>
+
+                    </div>
+                    <div class="summary-box">
+                        <span>
+                            LATE
+                        </span>
+
+                        <strong>
+                            5%
+                        </strong>
+                    </div>
+
+                    <div class="summary-box">
+                        <span>
+                            WORKING HOURS
+                        </span>
+
+                        <strong>
+                            7.8h
+                        </strong>
+
+                    </div>
+
+                </div>
+                <div class="attendance-rate">
+
+                    <div class="attendance-rate-header">
+
+                        <span>
+                            Overall Attendance Rate
+                        </span>
+
+                        <strong>
+                            86%
+                        </strong>
+
+                    </div>
+                    <div class="rate-bar">
+
+                        <div class="rate-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+
+                <div class="panel-heading">
+
+                    <h2>Assign New Task</h2>
+
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label>
+                            TASK TITLE
+                        </label>
+
+                        <input
+                            type="text"
+                            placeholder="Enter task title"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            ASSIGN TO
+                        </label>
+                        <select>
+                            <option>
+                                Select employee
+                            </option>
+                            <option>
+                                Arun Kumar
+                            </option>
+                            <option>
+                                Priya S
+                            </option>
+                            <option>
+                                Rahul M
+                            </option>
+                            <option>
+                                Divya R
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+
+                        <label>
+                            DEADLINE
+                        </label>
+
+                        <input
+                            type="date"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            DESCRIPTION
+                        </label>
+
+                        <textarea
+                            placeholder="Describe the task..."
+                        ></textarea>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        + Assign Task
+                    </button>
+
+                </form>
+            </div>
+        </section>
+        <footer>
+
+            UNLOX Employee Management System
+            &nbsp; • &nbsp;
+            Admin Portal
+            &nbsp; • &nbsp;
+            2026
+
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
